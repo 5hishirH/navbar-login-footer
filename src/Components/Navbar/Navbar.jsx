@@ -58,18 +58,18 @@ const Navbar = () => {
 
   return (
     <div className="shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
-      <div className="w-11/12 lg:w-4/5 mx-auto py-6 flex items-center justify-between">
+      <div className="w-11/12 lg:w-4/5 mx-auto py-5 lg:py-6 flex items-center justify-between">
         {/* Logo Part */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 lg:gap-4">
           <span
             onClick={() => {
               setOpen(!open);
             }}
-            className="cursor-pointer block lg:hidden"
+            className="cursor-pointer block lg:hidden text-xl pt-1 mr-2"
           >
             {open ? <MdCloseFullscreen /> : <FiMenu />}
           </span>
-          <div className="h-8 lg:h-10 lg:w-10">
+          <div className="h-8 w-8 lg:h-10 lg:w-10">
             <img
               src="https://i.ibb.co/N1v8ZTZ/icons8-favicon-96.png"
               alt="logo"
@@ -82,16 +82,18 @@ const Navbar = () => {
           </div>
         </div>
         {/* Navlinks and user info */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-20">
           {/* navlinks */}
           <div
             className={`text-lg font-medium ${
               open ? "" : "hidden lg:flex"
-            } flex flex-col lg:flex-row gap-4 absolute lg:relative top-11 left-0 lg:top-auto lg:left-auto pl-4 lg:pl-0 w-full lg:w-fit bg-some_green`}
+            } absolute lg:relative top-16 left-0 lg:top-auto lg:left-auto w-full py-4 lg:py-0 lg:w-fit ${navbarStyles.backgroud} shadow-[0_16px_10px_-10px_rgb(0,0,0,0.2)] lg:shadow-none`}
           >
-            {publicNavlinks?.map(({ name, pageLink }) => (
+            <div className="w-11/12 mx-auto flex flex-col lg:flex-row gap-4">
+            {publicNavlinks?.map(({ name, pageLink }, i) => (
               <NavLink
                 to={pageLink}
+                key={i}
                 className={({ isActive, isPending }) =>
                   isPending
                     ? "pending"
@@ -104,9 +106,10 @@ const Navbar = () => {
               </NavLink>
             ))}
             {user
-              ? privateNavlinks?.map(({ name, pageLink }) => (
+              ? privateNavlinks?.map(({ name, pageLink }, i) => (
                   <NavLink
                     to={pageLink}
+                    key={i}
                     className={({ isActive, isPending }) =>
                       isPending
                         ? "pending"
@@ -119,11 +122,12 @@ const Navbar = () => {
                   </NavLink>
                 ))
               : ""}
+            </div>
           </div>
           <div className="flex items-center gap-4">
             {user ? (
               <>
-                <div className="h-10 w-10 border-2 border-emerald-600 rounded-full overflow-hidden">
+                <div className="h-8 w-8 lg:h-10 lg:w-10 border border-emerald-600 rounded-full overflow-hidden">
                   <img
                     src={
                       user.photoURL
