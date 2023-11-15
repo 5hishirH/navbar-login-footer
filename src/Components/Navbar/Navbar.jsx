@@ -3,14 +3,12 @@ import { NavLink } from "react-router-dom";
 import MyButton from "../Button/MyButton";
 import { FiMenu } from "react-icons/fi";
 import { MdCloseFullscreen } from "react-icons/md";
+import useAuthContext from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   // replace with actual user data
-  const user = {
-    email: "testuser@code.com",
-    displayName: "Username",
-    photoURL: "https://i.ibb.co/XVKD97P/dummy-profile-1.jpg",
-  };
+  const { user, handleSignOut } = useAuthContext();
   //...
   const [open, setOpen] = useState(false);
   // replace with actual public navlinks
@@ -41,7 +39,7 @@ const Navbar = () => {
   const navbarStyles = {
     backgroud: "bg-white",
     inactiveNavLink: "text-black font-medium",
-    activeNavLink: "text-emerald-600 font-bold",
+    activeNavLink: "text-primary font-bold",
   };
 
   //   Log in btn styles
@@ -54,6 +52,30 @@ const Navbar = () => {
   const logoutBtnStyle = {
     backgroud: "bg-orange-500",
     textColor: "text-white",
+  };
+
+  // functions
+  const handleLogOut = () => {
+    Swal.fire({
+      icon: "question",
+      title: "Do you want to signout?",
+      showDenyButton: true,
+      confirmButtonText: "No",
+      confirmButtonColor: "#12AF83",
+      denyButtonText: `Yes`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        // stay signed in
+      } else if (result.isDenied) {
+        // logout
+        handleSignOut()
+          .then(() => {
+            Swal.fire("Logout Successfull!", "", "success");
+          })
+          .catch((error) => console.log(error));
+      }
+    });
   };
 
   return (
@@ -87,47 +109,60 @@ const Navbar = () => {
           <div
             className={`text-lg font-medium ${
               open ? "" : "hidden lg:flex"
-            } absolute lg:relative top-16 left-0 lg:top-auto lg:left-auto w-full py-4 lg:py-0 lg:w-fit ${navbarStyles.backgroud} shadow-[0_16px_10px_-10px_rgb(0,0,0,0.2)] lg:shadow-none`}
+            } absolute lg:relative top-16 left-0 lg:top-auto lg:left-auto w-full py-4 lg:py-0 lg:w-fit ${
+              navbarStyles.backgroud
+            } shadow-[0_16px_10px_-10px_rgb(0,0,0,0.2)] lg:shadow-none`}
           >
             <div className="w-11/12 mx-auto flex flex-col lg:flex-row gap-4">
-            {publicNavlinks?.map(({ name, pageLink }, i) => (
-              <NavLink
-                to={pageLink}
-                key={i}
-                className={({ isActive, isPending }) =>
-                  isPending
-                    ? "pending"
-                    : isActive
-                    ? `text-lg ${navbarStyles.activeNavLink}`
-                    : `text-lg ${navbarStyles.inactiveNavLink}`
-                }
-              >
-                {name}
-              </NavLink>
-            ))}
-            {user
-              ? privateNavlinks?.map(({ name, pageLink }, i) => (
-                  <NavLink
-                    to={pageLink}
-                    key={i}
-                    className={({ isActive, isPending }) =>
-                      isPending
-                        ? "pending"
-                        : isActive
-                        ? `text-lg ${navbarStyles.activeNavLink}`
-                        : `text-lg ${navbarStyles.inactiveNavLink}`
-                    }
-                  >
-                    {name}
-                  </NavLink>
-                ))
-              : ""}
+              {publicNavlinks?.map(({ name, pageLink }, i) => (
+                <NavLink
+                  to={pageLink}
+                  key={i}
+                  className={({ isActive, isPending }) =>
+                    isPending
+                      ? "pending"
+                      : isActive
+                      ? `text-lg ${navbarStyles.activeNavLink}`
+                      : `text-lg ${navbarStyles.inactiveNavLink}`
+                  }
+                >
+                  {name}
+                </NavLink>
+              ))}
+              {user
+                ? privateNavlinks?.map(({ name, pageLink }, i) => (
+                    <NavLink
+                      to={pageLink}
+                      key={i}
+                      className={({ isActive, isPending }) =>
+                        isPending
+                          ? "pending"
+                          : isActive
+                          ? `text-lg ${navbarStyles.activeNavLink}`
+                          : `text-lg ${navbarStyles.inactiveNavLink}`
+                      }
+                    >
+                      {name}
+                    </NavLink>
+                  ))
+                : ""}
             </div>
           </div>
           <div className="flex items-center gap-4">
             {user ? (
               <>
-                <div className="h-8 w-8 lg:h-10 lg:w-10 border border-emerald-600 rounded-full overflow-hidden">
+                <div className="avatar">
+                  <div className="w-9 rounded-full ring ring-success ring-offset-base-100 ring-offset-2">
+                    <img
+                      src={
+                        user.photoURL
+                          ? user.photoURL
+                          : "https://i.ibb.co/GRmXjRc/icons8-avatar-96.png"
+                      }
+                    />
+                  </div>
+                </div>
+                {/* <div className="h-8 w-8 lg:h-10 lg:w-10 border border-emerald-600 rounded-full overflow-hidden">
                   <img
                     src={
                       user.photoURL
@@ -137,18 +172,16 @@ const Navbar = () => {
                     alt=""
                     className="h-full w-full object-cover"
                   />
-                </div>
+                </div> */}
                 <button
-                  className={`${logoutBtnStyle.backgroud} ${logoutBtnStyle.textColor} ${MyButton}`}
+                  onClick={handleLogOut}
+                  className={`btn btn-warning text-white`}
                 >
                   LOGOUT
                 </button>
               </>
             ) : (
-              <NavLink
-                to={"/login"}
-                className={`${loginBtnStyle.backgroud} ${loginBtnStyle.textColor} ${MyButton}`}
-              >
+              <NavLink to={"/login"} className={`btn btn-success`}>
                 LOGIN
               </NavLink>
             )}
