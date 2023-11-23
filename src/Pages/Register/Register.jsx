@@ -5,17 +5,17 @@ import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
-    // styles
+  // styles
   const registerStyles = {
-    text: 'text-tert',
-    input: 'border-tert',
-    button: 'bg-tert'
+    text: "text-tert",
+    input: "border-tert",
+    button: "bg-tert",
   };
 
   const [showPass, setShowPass] = useState(false);
 
   const navigate = useNavigate();
-  const { handleCreateUserWithEmailAndPassword, handleUpdateProfile } =
+  const { handleCreateUserWithEmailAndPassword, handleUpdateProfile, handleSignInWithGoogle } =
     useAuthContext();
 
   const handleRegistration = (e) => {
@@ -52,13 +52,11 @@ const Register = () => {
       });
   };
 
-
-
   return (
-    <div className="w-10/12 md:w-1/5 mx-auto">
-      <div className="h-[3rem] flex justify-center mt-10">
+    <div className="w-10/12 md:w-1/5 mx-auto my-10">
+      <div className="h-[3rem] flex justify-center">
         <img
-          src="https://i.ibb.co/N1v8ZTZ/icons8-favicon-96.png"
+          src="https://i.ibb.co/ch1Ljgk/billing.png"
           alt=""
           className="h-full"
         />
@@ -66,51 +64,50 @@ const Register = () => {
       <div className="mt-10">
         <h2 className="text-3xl font-bold text-center">Create your account</h2>
         <form onSubmit={handleRegistration} className="mt-6 text-lg">
-          <div>
-            <div>
-              <label className="font-semibold md:font-medium">Email:</label>
-            </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">What is your email?</span>
+            </label>
             <input
-              type="email"
               name="email"
-              required
-              className={`w-full border-2 ${registerStyles.input} outline-offset-4 outline-[#3AAFA9] p-1 rounded-md`}
+              type="email"
+              placeholder="you@email.com"
+              className="input input-bordered input-secondary w-full"
             />
           </div>
-          <div className="mt-4">
-            <div>
-              <label className="font-semibold md:font-medium">Username:</label>
-            </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">What should we call you?</span>
+            </label>
             <input
-              type="text"
               name="user_name"
-              required
-              className={`w-full border-2 ${registerStyles?.input} outline-offset-4 outline-[#3AAFA9] p-1 rounded-md`}
+              type="text"
+              placeholder="Your name"
+              className="input input-bordered input-secondary w-full"
             />
           </div>
-          <div className="mt-4">
-            <div>
-              <label className="font-semibold md:font-medium">
-                Profile picture url:
-              </label>
-            </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Paste your profile picture url</span>
+            </label>
             <input
-              type="url"
               name="profilePicture"
+              type="url"
               defaultValue={null}
-              className={`w-full border-2 ${registerStyles.input} outline-offset-4 outline-[#3AAFA9] p-1 rounded-md`}
+              placeholder="https://www.your-profile-picture.com"
+              className="input input-bordered input-secondary w-full"
             />
           </div>
-          <div className="mt-4">
-            <div>
-              <label className="font-semibold md:font-medium">Password:</label>
-            </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
             <div className="flex items-center">
               <input
-                type={showPass ? "text" : "password"}
                 name="pass"
-                required
-                className={`w-full border-2 ${registerStyles.input} outline-offset-4 outline-[#3AAFA9] p-1 rounded-md`}
+                type={showPass ? "text" : "password"}
+                placeholder="Enter your password here"
+                className="input input-bordered input-secondary w-full"
               />
               <span
                 onClick={() => {
@@ -122,21 +119,28 @@ const Register = () => {
               </span>
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-sm flex gap-2 justify-end">
+          <div className="mt-8">
+            <input
+              className={`btn btn-success btn-block`}
+              type="submit"
+              value="CREATE ACCOUNT"
+            />
+            <div className="mt-2 text-sm flex gap-2 justify-center">
               <p className="font-light">Already have an account?</p>
-              <Link to={"/login"} className={`${registerStyles.text} font-semibold`}>
+              <Link to={"/login"} className={`text-emerald-500 font-semibold`}>
                 Login
               </Link>
             </div>
-            <input
-              className={`mt-3 w-full py-2 ${registerStyles.button} text-white font-bold cursor-pointer rounded-md`}
-              type="submit"
-              value="SIGN UP"
-            />
           </div>
         </form>
       </div>
+      <div className="divider my-8">OR</div>
+      <button
+        onClick={handleSignInWithGoogle}
+        className={`btn btn-outline btn-block`}
+      >
+        Continue with Google
+      </button>
     </div>
   );
 };

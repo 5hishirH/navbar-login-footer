@@ -79,7 +79,7 @@ const Login = () => {
     <div className="w-10/12 md:w-1/5 mx-auto">
       <div className="h-[3rem] flex justify-center mt-8">
         <img
-          src="https://i.ibb.co/N1v8ZTZ/icons8-favicon-96.png"
+          src="https://i.ibb.co/ch1Ljgk/billing.png"
           alt=""
           className="h-full"
         />
